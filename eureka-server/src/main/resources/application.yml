@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: eureka-server #服务名
+  profiles:
+    active: dev        #指定环境

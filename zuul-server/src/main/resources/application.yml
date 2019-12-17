@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name:  zuul-server
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,health,refresh

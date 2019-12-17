@@ -1,0 +1,3 @@
+#config 文件夹下的配置 格式 eurkea注册中心的{服务名}-{profile}.yml
+service-demo:
+   desc: Prod Profiles Properties From Config Server  #自定义属性配置

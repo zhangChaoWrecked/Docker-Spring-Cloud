@@ -1,0 +1,9 @@
+/.idea
+/config-server/target
+/eureka-server/target
+/gateway-server/target
+/monitoring-server/target
+/server-demo/target
+/zuul-server/target
+*.iml
+/**/target/

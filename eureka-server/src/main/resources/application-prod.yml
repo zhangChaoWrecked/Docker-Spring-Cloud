@@ -1,0 +1,16 @@
+spring:
+  security:
+    user:
+      name: alpha #用户名
+      password: 123456 #密码
+server:
+  port: 8761 #服务端口
+eureka:
+  client:
+    register-with-eureka: false #由于该应用为注册中心，所以设置为 false 代表不向汪册中心注册自己
+    fetch-registry: false      #由于注册中心的职责就是维护服务实例 并不需要去检索服务
+  server:
+    enable-self-preservation: false  #Eureka Server 将会尝试保护其服务的注册表中的信息，不再删除服务注册表中的数据 当网络故障恢复后，该 Eureka Server 节点会自动退出保护模式
+    eviction-interval-timer-in-ms: 10000  #默认60000  清理间隔 迅速提出已经失效的客户端服务
+
+

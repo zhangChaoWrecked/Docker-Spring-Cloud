@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: config-server #服务名
+  profiles:
+    active: native    #native 表示使用本地文件系统作为配置源，如果需要使用Git作为配置源 需要 注释掉 spring.profile.active属性
+  cloud:
+    config:
+      server:
+        native:   #存储配置的后端存储库(文件系统)
+          search-locations: E:/AlphaSpringCloud/config-server/src/main/resources/config #配置文件存储位置绝对路径  http://localhost:8888/service-demo/dev 来获取配文件信息
+        git:
+          uri: https://github.com/xxx/xxx.git  #仓库地址
+          username:  xxx  #账号
+          password: xxx   #密码
+          search-paths: /*   #查找文件配置的路径
+
+server:
+   port: 8888  #服务端口
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    service-url:
+      defaultZone: http://alpha:123456@localhost:8761/eureka/  #注册中心地址
+  instance:
+    lease-expiration-duration-in-seconds: 60  #默认90 Eureka Server至上一次收到client 的心跳之后， 等待下一次心跳的超时时间 在这个时间内若没收到下一次心跳，则移除该 Instance
+    lease-renewal-interval-in-seconds: 10     #默认30  eureka client 发送心跳给eureka server的频率
+    prefer-ip-address: true                   #采用IP注册
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port} # Eureka Web 控制台查看服务注册信息的时候，就是这样的一个格式:user-PC:service-user: 8081 可以修改为 service-user:192.168.10.170:8081
+

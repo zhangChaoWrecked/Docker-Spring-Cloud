@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: server-demo #服务名
+  cloud:
+    config:
+      refreshInterval: 300 #向ConfigServer 请求刷新配置的时间间隔
+      profile: dev
+      name: server-demo
+      discovery:
+        service-id: config-server
+        enabled: true
+      #uri: http://192.168.188.188:8888  #配置中心地址
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://alpha:123456@localhost:8761/eureka/  #注册中心地址

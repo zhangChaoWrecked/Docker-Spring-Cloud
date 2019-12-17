@@ -1,0 +1,14 @@
+server:
+   port: 8081  #服务端口
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+  instance:
+      lease-expiration-duration-in-seconds: 30  #默认90 Eureka Server至上一次收到client 的心跳之后， 等待下一次心跳的超时时间 在这个时间内若没收到下一次心跳，则移除该 Instance
+      lease-renewal-interval-in-seconds: 15     #默认30  eureka client 发送心跳给eureka server的频率
+      prefer-ip-address: true                   #采用IP注册
+      instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}   # Eureka Web 控制台查看服务注册信息的时候，就是这样的一个格式:user-PC:service-user: 8081 可以修改为 service-user:192.168.10.170:8081
+
+
+

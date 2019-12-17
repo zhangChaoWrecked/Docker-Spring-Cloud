@@ -1,0 +1,83 @@
+server:
+   port: 2002  #服务端口
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    service-url:
+      defaultZone: http://alpha:123456@localhost:8761/eureka/  #注册中心地址
+  instance:
+      lease-expiration-duration-in-seconds: 30  #默认90 Eureka Server至上一次收到client 的心跳之后， 等待下一次心跳的超时时间 在这个时间内若没收到下一次心跳，则移除该 Instance
+      lease-renewal-interval-in-seconds: 15     #默认30  eureka client 发送心跳给eureka server的频率
+      prefer-ip-address: true                   #采用IP注册
+      instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}   # Eureka Web 控制台查看服务注册信息的时候，就是这样的一个格式:user-PC:service-user: 8081 可以修改为 service-user:192.168.10.170:8081
+
+##路由方式是serviceId的方式 ribbon的生效 如果是url的方式，则zuul.host开头的生效
+zuul:
+  ignored-services: "*"     #排除所有基于Eureka的路由  只开放配置的指定服务
+  routes:
+    server-alpha-backmgr:
+     serviceId: server-alpha-backmgr
+     path: /wallet/backmgr/**  #指定路由服务自定义前缀
+     strip-prefix: false
+    server-alpha-wallet:
+     serviceId: server-alpha-wallet
+     path: /wallet/**  #指定路由服务自定义前缀
+    server-demo:
+     serviceId: server-demo
+     path: /server-demo/**  #指定路由服务自定义前缀 server-demo映射到 serviceDemo
+# http://localhost:2002/actuator/filters http://localhost:2002/actuator/routes 来访问过滤器信息 以及网关的路由
+#management.endpoints.web.exposure.include=filters,routes
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,health
+  #prefix: /api           # 所有已经定义的服务将添加前缀  比如：http://localhost:2002/serviceDemo/config/autoShow --> http://localhost:2002/api/serviceDemo/config/autoShow
+
+hystrix:
+ command:
+  default:
+    execution:
+     isolation:
+      thread:
+       timeoutInMilliseconds: 20000  #Zuul熔断超时时间   该时间大于service-demo等微服务的超时时间 一般hystrix的超时时间要大于ribbon的时间。如果超时就回触发zuul的回调机制
+ribbon:
+  okhttp:
+    enabled: true   #开启okhttp
+  ReadTimeout: 15000
+  SocketTimeout: 15000
+
+
+
+
+
+
+
+
+
+
+#配置文档地址  https://cloud.spring.io/spring-cloud-netflix/reference/html/#netflix-zuul-starter
+#zuul:
+#  routes:
+#    echo:
+#      path: /myusers/**
+#      serviceId: myusers-service
+#      stripPrefix: true
+#
+#hystrix:
+#  command:
+#    myusers-service:
+#      execution:
+#        isolation:
+#          thread:
+#            timeoutInMilliseconds: ...
+#
+#myusers-service:
+#  ribbon:
+#    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+#    listOfServers: https://example1.com,http://example2.com
+#    ConnectTimeout: 1000
+#    ReadTimeout: 3000
+#    MaxTotalHttpConnections: 500
+#    MaxConnectionsPerHost: 100
