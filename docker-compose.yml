@@ -1,71 +1,61 @@
 version: "1"
 services:
-	eureka-server:
-	  build: ./eureka-server
-	  image: wrecked/eureka-server:latest
-	  restart: on-failure
-	  ports:
-	  	- 8761:8761
-	  networks:
-	  	- microservice-net
-	  deploy:
-	    replicas: 1
-	    restart_policy:
-	  	condition: on-failure
-	zuul-server:
-	  build: ./zuul-server
-	  image: wrecked/zuul-server:latest
-	  restart: on-failure
-	  ports:
-	  	-2002:2002
-	  networks:
-	  	-microservice-net
-	  depends_on:
-	  	-eureka-server
-	  deploy:
-	    replicas: 1
-	    restart_policy:
-	  	condition: on-failure
-	config-server:
-	  build: ./config-server
-      image: wrecked/config-server:latest
-      restart: on-failure
-      ports:
-      	-8888:8888
-      networks:
-      	-microservice-net
-      depends_on:
-      	-eureka-server
-      deploy:
-	    replicas: 1
-	    restart_policy:
-	  	condition: on-failure
-	server-demo:
-	  build: ./server-demo
-	  image: wrecked/microservice-orderservice:latest
-	  restart: on-failure
-	  ports:
-	  	-8081:8081
-	  networks:
-	  	-microservice-net
-	  depends_on:
-	  	-eureka-server
-	  	-config-server
-	  deploy:
-	    replicas: 1
-	    restart_policy:
-	  	condition: on-failure
-	monitoring-server:
-	  build: ./monitoring-server
-	  image: wrecked/microservice-userservice:latest
-	  restart: on-failure
-	  ports:
-	  	-9091:9091
-	  networks:
-	  	-microservice-net
-	  depends_on:
-	  	-eureka-server
-	  deploy:
+  eureka-server:
+	build: ./eureka-server
+	image: wrecked/eureka-server:latest
+	restart: on-failure
+	ports:
+		- 8761:8761
+	deploy:
 	  replicas: 1
 	  restart_policy:
-	  	condition: on-failure
+		condition: on-failure
+  zuul-server:
+	build: ./zuul-server
+	image: wrecked/zuul-server:latest
+	restart: on-failure
+	ports:
+		-2002:2002
+	depends_on:
+		-eureka-server
+	deploy:
+	  replicas: 1
+	  restart_policy:
+		condition: on-failure
+  config-server:
+	build: ./config-server
+    image: wrecked/config-server:latest
+    restart: on-failure
+    ports:
+    	-8888:8888
+    depends_on:
+    	-eureka-server
+    deploy:
+	  replicas: 1
+	  restart_policy:
+		condition: on-failure
+  server-demo:
+	build: ./server-demo
+	image: wrecked/microservice-orderservice:latest
+	restart: on-failure
+	ports:
+		-8081:8081
+	depends_on:
+		-eureka-server
+		-config-server
+	deploy:
+	  replicas: 1
+	  restart_policy:
+		condition: on-failure
+  monitoring-server:
+	build: ./monitoring-server
+	image: wrecked/microservice-userservice:latest
+	restart: on-failure
+	ports:
+		-9091:9091
+	depends_on:
+		-eureka-server
+	deploy:
+	replicas: 1
+	restart_policy:
+		condition: on-failure
