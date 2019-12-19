@@ -5,7 +5,7 @@ services:
   image: wrecked/eureka-server:latest
   restart: on-failure
   ports:
-	- 8761:8761
+   - 8761:8761
   deploy:
 	replicas: 1
 	restart_policy:
