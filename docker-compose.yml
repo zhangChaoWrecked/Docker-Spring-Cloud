@@ -1,4 +1,4 @@
-version: "2.2"
+version: "1.25.1"
 services:
  eureka-server:
   build: ./eureka-server
