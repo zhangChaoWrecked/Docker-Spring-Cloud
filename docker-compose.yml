@@ -6,10 +6,6 @@ services:
    restart: on-failure
    ports:
     - 8761:8761
-   deploy:
-     replicas: 1
-     restart_policy:
-      condition: on-failure
  zuul-server:
    build: ./zuul-server/
    image: wrecked/zuul-server:latest
@@ -18,10 +14,6 @@ services:
        -2002:2002
    depends_on:
        -eureka-server
-   deploy:
-     replicas: 1
-     restart_policy:
-       condition: on-failure
  config-server:
    build: ./config-server/
    image: wrecked/config-server:latest
@@ -30,10 +22,6 @@ services:
        -8888:8888
    depends_on:
        -eureka-server
-   deploy:
-     replicas: 1
-     restart_policy:
-       condition: on-failure
  server-demo:
    build: ./server-demo/
    image: wrecked/microservice-orderservice:latest
@@ -43,10 +31,6 @@ services:
    depends_on:
        -eureka-server
        -config-server
-   deploy:
-     replicas: 1
-     restart_policy:
-       condition: on-failure
  monitoring-server:
    build: ./monitoring-server/
    image: wrecked/microservice-userservice:latest
@@ -56,6 +40,3 @@ services:
    depends_on:
        -eureka-server
    deploy:
-   replicas: 1
-   restart_policy:
-       condition: on-failure
