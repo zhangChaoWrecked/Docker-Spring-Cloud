@@ -5,38 +5,38 @@ services:
    image: wrecked/eureka-server:latest
    restart: on-failure
    ports:
-    - 8761:8761
+    -  8761:8761
  zuul-server:
    build: ./zuul-server/
    image: wrecked/zuul-server:latest
    restart: on-failure
    ports:
-       -2002:2002
+    -  2002:2002
    depends_on:
-       -eureka-server
+    - eureka-server
  config-server:
    build: ./config-server/
    image: wrecked/config-server:latest
    restart: on-failure
    ports:
-       -8888:8888
+    - 8888:8888
    depends_on:
-       -eureka-server
+    - eureka-server
  server-demo:
    build: ./server-demo/
    image: wrecked/microservice-orderservice:latest
    restart: on-failure
    ports:
-       -8081:8081
+    - 8081:8081
    depends_on:
-       -eureka-server
-       -config-server
+    - eureka-server
+    - config-server
  monitoring-server:
    build: ./monitoring-server/
    image: wrecked/microservice-userservice:latest
    restart: on-failure
    ports:
-       -9091:9091
+    - 9091:9091
    depends_on:
-       -eureka-server
+    - eureka-server
    deploy:
